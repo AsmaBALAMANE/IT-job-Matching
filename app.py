@@ -13,6 +13,11 @@ import prediction_sevice as ps
 
 
 app = Flask(__name__)
+@app.route('/', methods=['GET'])
+def connect():
+    response = json.dumps({'response': 'connected'})
+    return response, 200
+
 @app.route('/predict', methods=['POST'])
 def predict():
      
