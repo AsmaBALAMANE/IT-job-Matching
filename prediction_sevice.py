@@ -18,7 +18,8 @@ from gensim.models import Word2Vec, KeyedVectors
 # For preprocessing
 import re
 from gensim.models.phrases import Phrases, Phraser 
-import spacy  
+import spacy 
+import en_core_web_sm 
 import string
 from gensim.parsing.preprocessing import remove_stopwords
 # For word frequency 
