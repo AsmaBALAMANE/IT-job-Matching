@@ -35,19 +35,19 @@ def job_profile_matching(skills_rate, title_rate, description_rate, job, profile
     profile_skills= input_preparation(profile[0])
     result_skills= get_sif_feature_vectors(job_skills,profile_skills,skills_model)
     matching_skills= get_cosine_similarity(result_skills[0],result_skills[1])  
-    print(matching_skills)
+    print('matching_skills:', matching_skills)
   #Title similarity  
     job_title= input_preparation(job[1])
     profile_title= input_preparation(profile[1])
     result_title= get_sif_feature_vectors(job_title,profile_title,titles_model)
     matching_title= get_cosine_similarity(result_title[0],result_title[1])
-    print(matching_title)
+    print('matching_title:',matching_title)
   #Description similarity
     job_description= input_preparation(job[2])
     profile_description= input_preparation(profile[2])
     result_description= get_sif_feature_vectors(job_description,profile_description,desciptions_model)
     matching_description= get_cosine_similarity(result_description[0],result_description[1]) 
-    print(matching_description)
+    print('matching_description:', matching_description)
     return (matching_skills * skills_rate + matching_title * title_rate + matching_description * description_rate)
 
 # Features Extraction 
@@ -57,8 +57,9 @@ def map_word_frequency(document):
 def get_sif_feature_vectors(sentence1, sentence2, word_emb_model):
     sentence1 = [token for token in sentence1 if token in word_emb_model.wv.vocab]
     sentence2 = [token for token in sentence2 if token in word_emb_model.wv.vocab]
+    print(sentence1)
+    print(sentence2)
     word_counts = map_word_frequency((sentence1 + sentence2))
-    print('word_counts---------------------',word_counts)
     embedding_size = 300 # size of vectore in word embeddings
     a = 0.001
     sentence_set=[]
