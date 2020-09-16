@@ -21,10 +21,13 @@ The system takes as input a job offer ‘j’ and a candidate's profile ‘p’.
 
 In order to use the system easily and efficiently, it was deployed with an API. Therefore, it could be used early in the development of other websites. 
 
+### Test the API online 
+The API is deployed on heroku, to test it, please use an Online API tester ( see https://reqbin.com/) 
+
 ### Endpoints
 - server de test:    https://profile-job-matcher.herokuapp.com/
-- method:            POST 
 - endpoint:         /predict
+- method:            POST 
 - body: json structure 
 ```
 {
@@ -59,3 +62,6 @@ In order to use the system easily and efficiently, it was deployed with an API. 
 - Run `pip install -r requirements.txt` in the root project folder
 - Run `python -m spacy download en_core_web_sm` in the root project folder to lo load the SpaCy model used for text pre-processing
 - Run `python wsgi.py` in the root project folder to run the app on the development server
+
+
+
