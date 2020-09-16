@@ -5,25 +5,21 @@ Created on Mon Aug 31 00:00:27 2020
 @author: BALAMANE Asma
 """
 
-import pandas as pd  
+
 import numpy as np
-from time import time  
 import logging  
-import multiprocessing
-import collections
 from collections import Counter
 import itertools
-import gensim
-from gensim.models import Word2Vec, KeyedVectors   
+
 # For preprocessing
 import re
 from gensim.models.phrases import Phrases, Phraser 
 import spacy 
-import en_core_web_sm 
-import string
+
+#import string
 from gensim.parsing.preprocessing import remove_stopwords
+
 # For word frequency 
-from collections import defaultdict
 from sklearn.metrics.pairwise import cosine_similarity  
 
 # Setting up the loggings to monitor gensim
@@ -35,21 +31,39 @@ def job_profile_matching(skills_rate, title_rate, description_rate, job, profile
     job_skills= input_preparation(job[0])
     profile_skills= input_preparation(profile[0])
     result_skills= get_sif_feature_vectors(job_skills,profile_skills,skills_model)
-    matching_skills= get_cosine_similarity(result_skills[0],result_skills[1])  
+    #if any word from job input or profile input could be detected in the vocabulary
+    if(result_skills==0):
+       matching_skills=0
+    else:
+       matching_skills= get_cosine_similarity(result_skills[0],result_skills[1])  
     print('matching_skills:', matching_skills)
   #Title similarity  
     job_title= input_preparation(job[1])
     profile_title= input_preparation(profile[1])
     result_title= get_sif_feature_vectors(job_title,profile_title,titles_model)
-    matching_title= get_cosine_similarity(result_title[0],result_title[1])
+    #if any word from job input or profile input could be detected in the vocabulary
+    if(result_title==0):
+       matching_title=0
+    else:
+       matching_title= get_cosine_similarity(result_title[0],result_title[1])
     print('matching_title:',matching_title)
   #Description similarity
     job_description= input_preparation(job[2])
     profile_description= input_preparation(profile[2])
     result_description= get_sif_feature_vectors(job_description,profile_description,desciptions_model)
-    matching_description= get_cosine_similarity(result_description[0],result_description[1]) 
+     #if any word from job input or profile input could be detected in the vocabulary
+    if(result_description==0):
+       matching_description=0
+    else:
+      matching_description= get_cosine_similarity(result_description[0],result_description[1]) 
     print('matching_description:', matching_description)
-    return (matching_skills * skills_rate + matching_title * title_rate + matching_description * description_rate)
+    matchings=[]
+    matchings.append(matching_title)
+    matchings.append(matching_description)
+    matchings.append(matching_skills)
+    final_matching= matching_skills * skills_rate + matching_title * title_rate + matching_description * description_rate
+    matchings.append(final_matching)
+    return (matchings)
 
 # Features Extraction 
 def map_word_frequency(document):
@@ -59,7 +73,9 @@ def get_sif_feature_vectors(sentence1, sentence2, word_emb_model):
     sentence1 = [token for token in sentence1 if token in word_emb_model.wv.vocab]
     sentence2 = [token for token in sentence2 if token in word_emb_model.wv.vocab]
     print(sentence1)
-    print(sentence2)
+    print(sentence2) 
+    if (not sentence1 or not sentence2): 
+     return 0
     word_counts = map_word_frequency((sentence1 + sentence2))
     embedding_size = 300 # size of vectore in word embeddings
     a = 0.001
@@ -82,7 +98,7 @@ def input_preparation(sentence):
     txt = list(set(txt)) 
     r = re.compile("[A-Za-z#++']+")
     txt = list(filter(r.match, txt))
-    phrases = Phrases(txt, min_count=30, progress_per=10000)
+    phrases = Phrases(txt, min_count=1, progress_per=10000)
     bigram = Phraser(phrases)
     sentences = bigram[txt]
     return sentences
