@@ -22,7 +22,7 @@ The system takes as input a job offer ‘j’ and a candidate's profile ‘p’.
 In order to use the system easily and efficiently, it was deployed with an API. Therefore, it could be used early in the development of other websites. 
 
 ### Test the API online 
-The API is deployed on heroku, to test it, please use an API tester ( e.g. [postman](https://www.postman.com/downloads/) ) 
+The API is deployed on [heroku](https://www.heroku.com/), to test it, please use an API-tester ( e.g. [postman](https://www.postman.com/downloads/) ) 
 
 ### Endpoints
 - test host    :    https://profile-job-matcher.herokuapp.com/
