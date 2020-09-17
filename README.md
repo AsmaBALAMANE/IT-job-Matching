@@ -25,7 +25,7 @@ In order to use the system easily and efficiently, it was deployed with an API. 
 The API is deployed on heroku, to test it, please use an Online API tester ( see https://reqbin.com/) 
 
 ### Endpoints
-- server de test:    https://profile-job-matcher.herokuapp.com/
+- test host    :    https://profile-job-matcher.herokuapp.com/
 - endpoint:         /predict
 - method:            POST 
 - body: json structure 
