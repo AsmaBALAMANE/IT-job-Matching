@@ -70,7 +70,6 @@ The API is deployed on heroku, to test it, please use an Online API tester ( see
 
 - Clone the repository  
 - Run `pip install -r requirements.txt` in the root project folder
-- Run `python -m spacy download en_core_web_sm` in the root project folder to lo load the SpaCy model used for text pre-processing
 - Run `python wsgi.py` in the root project folder to run the app on the development server
 
 
