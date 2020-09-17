@@ -63,7 +63,7 @@ The API is deployed on heroku, to test it, please use an Online API tester ( see
 [ModelsTraining.ipynb](https://colab.research.google.com/drive/1MZeVYIkjrGQZSSbcCSTg0xg5TUoKHdIo#scrollTo=YZW3YrezfBHP) :  conatains code to create and train the prediction models
 
 #### Prerequisites
-- Python >= 2.7 
+- Python >= 2.8 
 - Packages manager conda or pip to install requirements.
 
 ### Preparing the envirement
