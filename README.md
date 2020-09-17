@@ -46,6 +46,16 @@ The API is deployed on heroku, to test it, please use an Online API tester ( see
 	           }
 }
 ```
+- Expected reponse : json structure 
+```
+{
+    "final_rate": r,
+    "rate_description": m2,
+    "rate_skills": m3,
+    "rate_titles": m1
+}
+```
+
 ## Development Usage
 
 ### Create and train prediction models  
