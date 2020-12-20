@@ -15,6 +15,7 @@ import prediction_sevice as ps
 app = Flask(__name__)
 
 # if mode==0 : use 3 models; if mode==1 : use global model
+# recommended mode is 1
 __mode=1
 # deserialization
 def load_models(file_path):  
@@ -23,7 +24,7 @@ def load_models(file_path):
         model = data['model']
     return model
 
-#Loading models
+#Loading models 
 if __mode==1 :
     w2v_all = load_models('models/w2v_all.p')
 if __mode==0 :    
