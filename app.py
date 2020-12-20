@@ -13,6 +13,24 @@ import prediction_sevice as ps
 
 
 app = Flask(__name__)
+
+# if mode==0 : use 3 models; if mode==1 : use global model
+__mode=1
+# deserialization
+def load_models(file_path):  
+    with open(file_path, 'rb') as pickled:
+        data = pickle.load(pickled)
+        model = data['model']
+    return model
+
+#Loading models
+if __mode==1 :
+    w2v_all = load_models('models/w2v_all.p')
+if __mode==0 :    
+    w2v_skills = load_models('models/w2v_skills.p')
+    w2v_jobtitles = load_models('models/w2v_jobtitles.p')
+    w2v_description = load_models('models/w2v_description.p') 
+
 @app.route('/', methods=['GET'])
 def connect():
     response = json.dumps({'response': 'connected'})
@@ -33,19 +51,17 @@ def predict():
     job.append(request_json['job']['j_title'])
     job.append(request_json['job']['description'])
     
-    # get profile as vector
+   # get profile as vector
     profile=[]
     profile.append(request_json['profile']['p_skills'])
     profile.append(request_json['profile']['p_title'])
     profile.append(request_json['profile']['experiences'])
-    
- 
-    #models
-    w2v_skills = load_models('models/w2v_skills.p')
-    w2v_jobtitles = load_models('models/w2v_jobtitles.p')
-    w2v_description = load_models('models/w2v_description.p')  
+  
     # calculate matching rate
-    matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job, profile,w2v_skills, w2v_jobtitles, w2v_description)
+    if __mode==0 :
+      matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job, profile,w2v_skills, w2v_jobtitles, w2v_description)
+    if __mode==1 :
+      matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job, profile, w2v_all, w2v_all, w2v_all)
     rates= {'rate_titles': matching[0],'rate_description': matching[1],'rate_skills': matching[2],'final_rate': matching[3]}
     response = flask.jsonify(rates)
     return response, 200
@@ -65,13 +81,7 @@ def predictListOffers():
     profile.append(request_json['profile']['p_skills'])
     profile.append(request_json['profile']['p_title'])
     profile.append(request_json['profile']['experiences'])
-    
-
-    #models
-    w2v_skills = load_models('models/w2v_skills.p')
-    w2v_jobtitles = load_models('models/w2v_jobtitles.p')
-    w2v_description = load_models('models/w2v_description.p')  
-   
+        
     jobs=[]
     rates_raw=[]  
    
@@ -84,7 +94,10 @@ def predictListOffers():
         job_raw.append(job['description'])
         
         # calculate matching rate 
-        matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job_raw, profile,w2v_skills, w2v_jobtitles, w2v_description)
+        if __mode==0 :
+          matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job_raw, profile,w2v_skills, w2v_jobtitles, w2v_description)
+        if __mode==1 :
+          matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job_raw, profile,w2v_all, w2v_all, w2v_all)
         rates= {'rate_titles': matching[0],'rate_description': matching[1],'rate_skills': matching[2],'final_rate': matching[3]}
         rates_raw.append(rates)
         
@@ -123,20 +136,16 @@ def predictListProfiles():
         profile_raw.append(profile['experiences'])
         
         # calculate matching rate 
-        matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job, profile_raw,w2v_skills, w2v_jobtitles, w2v_description)
+        if __mode==0 :
+           matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job, profile_raw,w2v_skills, w2v_jobtitles, w2v_description)
+        if __mode==1 : 
+           matching= ps.job_profile_matching(skills_rate, title_rate, description_rate, job, profile_raw,w2v_all, w2v_all, w2v_all)
         rates= {'rate_titles': matching[0],'rate_description': matching[1],'rate_skills': matching[2],'final_rate': matching[3]}
         rates_raw.append(rates)
         
     response = flask.jsonify(rates_raw)
     return response, 200
 
-
-# deserialization
-def load_models(file_path):  
-    with open(file_path, 'rb') as pickled:
-        data = pickle.load(pickled)
-        model = data['model']
-    return model
 
 if __name__ == '__main__':
     application.run(debug=True)

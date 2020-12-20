@@ -95,11 +95,10 @@ def input_preparation(sentence):
     nlp = spacy.load("en_core_web_sm")
     doc1=nlp(sentence)
     txt= [token.lower() for token in cleaning(doc1).split()]
-    txt = list(set(txt)) 
+    txt = list(txt) 
     r = re.compile("[A-Za-z#++']+")
     txt = list(filter(r.match, txt))
-    phrases = Phrases(txt, min_count=1, progress_per=10000)
-    bigram = Phraser(phrases)
+    bigram = Phrases.load("models/pharser.pkl")
     sentences = bigram[txt]
     return sentences
 
