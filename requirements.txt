@@ -1,7 +1,6 @@
 -ffi @ file:///C:/ci/cffi_1600699246375/work
 aiofiles==0.5.0
 alabaster==0.7.12
-anaconda-client==1.7.2
 anaconda-project==0.8.3
 aniso8601==7.0.0
 argh==0.26.2
