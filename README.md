@@ -22,94 +22,9 @@ The system takes as input a job offer ‘j’ and a candidate's profile ‘p’.
 In order to use the system easily and efficiently, it was deployed with an API. Therefore, it could be used early in the development of other websites. 
 
 ### Test the API online 
-The API is deployed on [heroku](https://www.heroku.com/), to test it, please use an API-tester ( e.g. [postman](https://www.postman.com/downloads/) ) 
+The API is deployed on [heroku](https://www.heroku.com/)
 
-### Endpoints
-- test host    :    https://profile-job-matcher.herokuapp.com/
-- endpoint:         /predict
-- method:            POST 
-- body: json structure 
-```
-{
-	"skills_rate" : "w3",
-	"title_rate"   : "w2" ,
-	"description_rate" : "w1" ,
-	"job" : {
-		 "j_title": "text", 
-		 "description": "text", 
-		 "j_skills": "text"
-	         },
-	"profile" : {
-		 "p_title": "text", 
-		 "experiences": "text", 
-		 "p_skills": "text"
-	           }
-}
-```
-- Expected reponse : json structure 
-```
-{
-    "final_rate": r,
-    "rate_description": m2,
-    "rate_skills": m3,
-    "rate_titles": m1
-}
-```
-- endpoint:         /predictListOffers
-- method:            POST 
-- body: json structure 
-```
-{
-	"skills_rate" : "w3",
-	"title_rate"   : "w2" ,
-	"description_rate" : "w1" ,
-	"job" : [{
-		 "j_title": "text", 
-		 "description": "text", 
-		 "j_skills": "text"
-	         },
-		 ... 
-		 ],
-	"profile" : {
-		 "p_title": "text", 
-		 "experiences": "text", 
-		 "p_skills": "text"
-	           }
-}
-```
-- endpoint:         /predictListProfiles
-- method:            POST 
-- body: json structure 
-```
-{
-	"skills_rate" : "w3",
-	"title_rate"   : "w2" ,
-	"description_rate" : "w1" ,
-	"job" : {
-		 "j_title": "text", 
-		 "description": "text", 
-		 "j_skills": "text"
-	         },
-	"profile" : [{
-		 "p_title": "text", 
-		 "experiences": "text", 
-		 "p_skills": "text"
-	           },
-		   ...
-		   ]
-}
-```
-- Expected reponse : json structure 
-```
-[{
-    "final_rate": r,
-    "rate_description": m2,
-    "rate_skills": m3,
-    "rate_titles": m1
-},
-...
-]
-```
+
 ## Development Usage
 
 ### Create and train prediction models  
