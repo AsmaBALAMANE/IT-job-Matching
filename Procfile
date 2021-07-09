@@ -1,1 +1,1 @@
-web: gunicorn app:app --preload
+web: uvicorn main:app --workers 4

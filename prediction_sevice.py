@@ -25,11 +25,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 # Setting up the loggings to monitor gensim
 logging.basicConfig(format="%(levelname)s - %(asctime)s: %(message)s", datefmt= '%H:%M:%S', level=logging.INFO)
 
-def job_profile_matching(skills_rate, title_rate, description_rate, job, profile,skills_model, titles_model, desciptions_model):
+def job_profile_matching(input_rates, job, profile,skills_model, titles_model, desciptions_model,nlp,bigram):
   
   #Skills similarity 
-    job_skills= input_preparation(job[0])
-    profile_skills= input_preparation(profile[0])
+    job_skills= input_preparation(job.j_skills,nlp,bigram)
+    profile_skills= input_preparation(profile.p_skills,nlp,bigram)
     result_skills= get_sif_feature_vectors(job_skills,profile_skills,skills_model)
     #if any word from job input or profile input could be detected in the vocabulary
     if(result_skills==0):
@@ -38,8 +38,8 @@ def job_profile_matching(skills_rate, title_rate, description_rate, job, profile
        matching_skills= get_cosine_similarity(result_skills[0],result_skills[1])  
     print('matching_skills:', matching_skills)
   #Title similarity  
-    job_title= input_preparation(job[1])
-    profile_title= input_preparation(profile[1])
+    job_title= input_preparation(job.j_title,nlp,bigram)
+    profile_title= input_preparation(profile.p_title,nlp,bigram)
     result_title= get_sif_feature_vectors(job_title,profile_title,titles_model)
     #if any word from job input or profile input could be detected in the vocabulary
     if(result_title==0):
@@ -48,8 +48,8 @@ def job_profile_matching(skills_rate, title_rate, description_rate, job, profile
        matching_title= get_cosine_similarity(result_title[0],result_title[1])
     print('matching_title:',matching_title)
   #Description similarity
-    job_description= input_preparation(job[2])
-    profile_description= input_preparation(profile[2])
+    job_description= input_preparation(job.description,nlp,bigram)
+    profile_description= input_preparation(profile.experiences,nlp,bigram)
     result_description= get_sif_feature_vectors(job_description,profile_description,desciptions_model)
      #if any word from job input or profile input could be detected in the vocabulary
     if(result_description==0):
@@ -57,13 +57,35 @@ def job_profile_matching(skills_rate, title_rate, description_rate, job, profile
     else:
       matching_description= get_cosine_similarity(result_description[0],result_description[1]) 
     print('matching_description:', matching_description)
-    matchings=[]
-    matchings.append(matching_title)
-    matchings.append(matching_description)
-    matchings.append(matching_skills)
-    final_matching= matching_skills * skills_rate + matching_title * title_rate + matching_description * description_rate
-    matchings.append(final_matching)
-    return (matchings)
+    
+    final_matching= matching_skills * input_rates.skills_rate + matching_title * input_rates.title_rate + matching_description * input_rates.description_rate
+    print('final_matching:', final_matching)
+   
+    matching= dict({"matching_titles": matching_title,
+            "matching_description": matching_description,
+            "matching_skills":matching_skills,
+            "final_matching": final_matching
+            })
+    
+    return matching
+ 
+# Prediction for List of profiles 
+def job_profileList_matching(input_rates, job, profiles,skills_model, titles_model, desciptions_model,nlp,bigram): 
+    rates_raw= []
+  # calculate matching rates   
+    for profile in profiles:   
+       matching= job_profile_matching(input_rates, job, profile,skills_model, titles_model, desciptions_model,nlp,bigram)
+       rates_raw.append(matching)  
+    return rates_raw
+
+# Prediction for List of jobs 
+def profile_jobList_matching(input_rates, jobs, profile,skills_model, titles_model, desciptions_model,nlp,bigram): 
+    rates_raw= []
+  # calculate matching rates   
+    for job in jobs:   
+       matching= job_profile_matching(input_rates, job, profile,skills_model, titles_model, desciptions_model,nlp,bigram)
+       rates_raw.append(matching)  
+    return rates_raw
 
 # Features Extraction 
 def map_word_frequency(document):
@@ -91,14 +113,12 @@ def get_sif_feature_vectors(sentence1, sentence2, word_emb_model):
     return sentence_set
 
 #Input preparation 
-def input_preparation(sentence):
-    nlp = spacy.load("en_core_web_sm")
+def input_preparation(sentence,nlp,bigram): 
     doc1=nlp(sentence)
     txt= [token.lower() for token in cleaning(doc1).split()]
     txt = list(txt) 
     r = re.compile("[A-Za-z#++']+")
-    txt = list(filter(r.match, txt))
-    bigram = Phrases.load("models/pharser.pkl")
+    txt = list(filter(r.match, txt)) 
     sentences = bigram[txt]
     return sentences
 
