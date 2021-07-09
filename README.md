@@ -39,7 +39,7 @@ The API is deployed on [heroku](https://www.heroku.com/)
 
 - Clone the repository  
 - Run `pip install -r requirements.txt` in the root project folder
-- Run `python wsgi.py` in the root project folder to run the app on the development server
+- Run `uvicorn main:app --reload` in the root project folder to run the app on the development server
 
 
 
