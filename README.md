@@ -14,7 +14,7 @@ The system takes as input a job offer ‘j’ and a candidate's profile ‘p’.
 ![alt text](https://github.com/AsmaBALAMANE/job-profile-matcher/blob/master/generalProcess.png?raw=true)
 
 ### Technical documentation 
--   [technical report](https://drive.google.com/file/d/1T-QxfpwCQy1Y2YQ68flzyGQi6d5uG0dD/view?usp=sharing):  a guide for understanding the proposed system and its technical details  
+-   [technical report](https://drive.google.com/file/d/1ovzifY-nQD1m9A6PXOt33e98vh_SGsiY/view?usp=sharing):  a guide for understanding the proposed system and its technical details  
 -   [technical architecture](https://app.milanote.com/1KhxA61Pv0Ff7b?p=8hNPmkRUZuJ): gives an overview of the system’s technical architecture and its external dependencies
 
 ## API : IT job-candidate matching
