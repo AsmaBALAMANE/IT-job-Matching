@@ -6,6 +6,7 @@ gunicorn
 scikit-learn
 scipy 
 spacy
+click==7.1.2
 pickle-mixin
 pydantic
 typing
