@@ -4,7 +4,7 @@ future
 gensim
 gunicorn
 scikit-learn
-scipy 
+spacy==2.3.2 
 spacy
 click==7.1.2
 pickle-mixin
