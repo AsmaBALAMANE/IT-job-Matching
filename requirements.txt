@@ -11,4 +11,3 @@ pydantic
 typing
 numpy
 uvicorn
-nltk
