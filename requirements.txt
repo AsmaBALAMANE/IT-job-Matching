@@ -4,10 +4,3 @@ future
 gensim
 gunicorn
 scikit-learn
-spacy==2.3.2 
-click==7.1.2
-pickle-mixin
-pydantic
-typing
-numpy
-uvicorn
